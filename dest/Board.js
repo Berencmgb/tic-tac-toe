@@ -42,7 +42,6 @@ class Board {
             piece.setAttribute('id', `piece-${i + 1}`);
             piece.setAttribute('piece-size', `${i + 1}`);
             console.log(piece.id);
-            //console.log(piece as Piece);
         }
         for (var i = 0; i < 2; i++) {
             var piece = document.createElement('doll-piece');
@@ -50,7 +49,6 @@ class Board {
             piece.setAttribute('id', `piece-${i + 3}`);
             piece.setAttribute('piece-size', `${i + 3}`);
             console.log(piece.id);
-            //console.log(piece as Piece);
         }
     }
 }
