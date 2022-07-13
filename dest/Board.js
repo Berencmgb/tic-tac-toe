@@ -6,8 +6,10 @@ class Board {
     }
     generateBoard() {
         document.body.innerHTML += `<div class="game-wrapper">
-        <div class="player-one-pieces player">
-            
+        <div id="player-one-pieces-wrapper" class="player">
+            <div class="pieces">
+
+            </div>
         </div>
         <div class="game">
             <div class="border">
@@ -21,8 +23,10 @@ class Board {
 
             </div>
             </div>
-            <div class="player-two-pieces player">
+            <div id="player-two-pieces-wrapper" class="player">
+                <div class="pieces">
 
+                </div>  
             </div>
         </div>`;
         var board = document.getElementsByClassName('board')[0];
@@ -30,12 +34,21 @@ class Board {
             return;
         // generate slots
         for (var i = 0; i < 9; i++) {
-            // if(i == 0 || i == 1)
-            //     board.innerHTML += `<board-slot id="slot-${i + 1}"><doll-piece></doll-piece></board-slot>`;
-            // else
-            board.innerHTML += `<board-slot class="slot" id="slot-${i + 1}"> </board-slot>`;
+            var slot = document.createElement('board-slot');
+            board.append(slot);
+            slot.setAttribute('id', `slot-${i + 1}`);
+            slot.classList.add('slot');
         }
+        var players = document.getElementsByClassName('player');
         var slots = document.getElementsByClassName('slot');
+        for (var i = 0; i < players.length; i++) {
+            for (var j = 0; j < 5; j++) {
+                var slot = document.createElement('board-slot');
+                slot.classList.add('slot');
+                slot.setAttribute('id', `player-${i}-slot-${j}`);
+                players[i].getElementsByClassName('pieces')[0].append(slot);
+            }
+        }
         for (var i = 0; i < 2; i++) {
             var piece = document.createElement('doll-piece');
             slots[i].append(piece);
@@ -43,12 +56,13 @@ class Board {
             piece.setAttribute('piece-size', `${i + 1}`);
             console.log(piece.id);
         }
-        for (var i = 0; i < 2; i++) {
-            var piece = document.createElement('doll-piece');
-            slots[i + 3].append(piece);
-            piece.setAttribute('id', `piece-${i + 3}`);
-            piece.setAttribute('piece-size', `${i + 3}`);
-            console.log(piece.id);
-        }
+        // for(var i = 0; i < 2; i++)
+        // {
+        //     var piece = document.createElement('doll-piece');
+        //     slots[i + 3].append(piece);
+        //     piece.setAttribute('id', `piece-${i + 3}`);
+        //     piece.setAttribute('piece-size', `${i + 3}`);
+        //     console.log(piece.id);            
+        // }
     }
 }

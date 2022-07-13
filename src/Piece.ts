@@ -1,6 +1,4 @@
 class Piece extends HTMLElement {
-    size: PieceSize | undefined;
-
     constructor(){
         super()
 
@@ -24,9 +22,6 @@ class Piece extends HTMLElement {
     }
     setId(id: number){
         this.id = `piece-${id}`;
-    }
-    setPieceSize(size: PieceSize){
-        this.size = size;
     }
 }
 

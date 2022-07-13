@@ -6,8 +6,10 @@ class Board {
     }
     generateBoard() {
         document.body.innerHTML += `<div class="game-wrapper">
-        <div class="player-one-pieces player">
-            
+        <div id="player-one-pieces-wrapper" class="player">
+            <div class="pieces">
+
+            </div>
         </div>
         <div class="game">
             <div class="border">
@@ -21,8 +23,10 @@ class Board {
 
             </div>
             </div>
-            <div class="player-two-pieces player">
+            <div id="player-two-pieces-wrapper" class="player">
+                <div class="pieces">
 
+                </div>  
             </div>
         </div>`;
         var board = document.getElementsByClassName('board')[0];
@@ -30,12 +34,21 @@ class Board {
             return;
         // generate slots
         for (var i = 0; i < 9; i++) {
-            // if(i == 0 || i == 1)
-            //     board.innerHTML += `<board-slot id="slot-${i + 1}"><doll-piece></doll-piece></board-slot>`;
-            // else
-            board.innerHTML += `<board-slot class="slot" id="slot-${i + 1}"> </board-slot>`;
+            var slot = document.createElement('board-slot');
+            board.append(slot);
+            slot.setAttribute('id', `slot-${i + 1}`);
+            slot.classList.add('slot');
         }
+        var players = document.getElementsByClassName('player');
         var slots = document.getElementsByClassName('slot');
+        for (var i = 0; i < players.length; i++) {
+            for (var j = 0; j < 5; j++) {
+                var slot = document.createElement('board-slot');
+                slot.classList.add('slot');
+                slot.setAttribute('id', `player-${i}-slot-${j}`);
+                players[i].getElementsByClassName('pieces')[0].append(slot);
+            }
+        }
         for (var i = 0; i < 2; i++) {
             var piece = document.createElement('doll-piece');
             slots[i].append(piece);
@@ -43,21 +56,15 @@ class Board {
             piece.setAttribute('piece-size', `${i + 1}`);
             console.log(piece.id);
         }
-        for (var i = 0; i < 2; i++) {
-            var piece = document.createElement('doll-piece');
-            slots[i + 3].append(piece);
-            piece.setAttribute('id', `piece-${i + 3}`);
-            piece.setAttribute('piece-size', `${i + 3}`);
-            console.log(piece.id);
-        }
+        // for(var i = 0; i < 2; i++)
+        // {
+        //     var piece = document.createElement('doll-piece');
+        //     slots[i + 3].append(piece);
+        //     piece.setAttribute('id', `piece-${i + 3}`);
+        //     piece.setAttribute('piece-size', `${i + 3}`);
+        //     console.log(piece.id);            
+        // }
     }
-}
-
-"use strict";
-mainLoop();
-function mainLoop() {
-    var board = new Board(3, 3);
-    board.generateBoard();
 }
 
 "use strict";
@@ -67,12 +74,11 @@ class Piece extends HTMLElement {
         this.innerHTML += '<img class="icon" src="https://static.vecteezy.com/system/resources/previews/001/192/291/original/circle-png.png" />';
         this.classList.add('piece');
         this.ondragstart = function (e) {
-            var _a, _b, _c;
+            var _a, _b;
             var piece = this;
             (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("piece-id", piece.id);
-            //.dataTransfer?.setData("piece-size", String(piece.getAttribute('piece-size')));
-            (_b = e.dataTransfer) === null || _b === void 0 ? void 0 : _b.setData("piece-size", String(piece.size));
-            console.log((_c = e.dataTransfer) === null || _c === void 0 ? void 0 : _c.getData('piece-size'));
+            (_b = e.dataTransfer) === null || _b === void 0 ? void 0 : _b.setData("piece-size", String(piece.getAttribute('piece-size')));
+            console.log(e.dataTransfer);
         };
         this.ondrag = function (e) {
             e.preventDefault();
@@ -83,9 +89,6 @@ class Piece extends HTMLElement {
     }
     setId(id) {
         this.id = `piece-${id}`;
-    }
-    setPieceSize(size) {
-        this.size = size;
     }
 }
 window.customElements.define('doll-piece', Piece);
@@ -99,6 +102,25 @@ var PieceSize;
     PieceSize[PieceSize["SizeFour"] = 3] = "SizeFour";
     PieceSize[PieceSize["SizeFive"] = 4] = "SizeFive";
 })(PieceSize || (PieceSize = {}));
+
+"use strict";
+class Player {
+    constructor() {
+    }
+    generatePieces(i) {
+        var board = document.getElementsByClassName('player')[i].getElementsByClassName('pieces')[0];
+        var slots = board.getElementsByClassName('slot');
+        for (var j = 0; j < slots.length; j++) {
+            var piece = document.createElement('doll-piece');
+            slots[j].append(piece);
+            piece.setAttribute('id', `p${i}-piece-${j + 1}`);
+            piece.setAttribute('piece-size', `${j + 1}`);
+            var img = piece.getElementsByTagName('img')[0];
+            // load images here by piece size
+            //img.style.width = `${j + 1 / slots.length * 100}%`
+        }
+    }
+}
 
 "use strict";
 class Slot extends HTMLElement {
@@ -130,4 +152,15 @@ class Printer {
     sayMessege() {
         return console.log(this.storedMessage);
     }
+}
+
+"use strict";
+mainLoop();
+function mainLoop() {
+    var board = new Board(3, 3);
+    var player1 = new Player();
+    var player2 = new Player();
+    board.generateBoard();
+    player1.generatePieces(0);
+    player2.generatePieces(1);
 }
