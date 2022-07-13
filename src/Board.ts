@@ -1,11 +1,14 @@
 class Board {
     xSize: number;
     ySize: number;
+    boardSlots : Array<Slot>;
 
     
     constructor(x: number, y: number){
         this.xSize = x;
         this.ySize = y;
+        
+        this.boardSlots = [];
     }
     generateBoard(){
         document.body.innerHTML += `<div class="game-wrapper">
@@ -43,10 +46,14 @@ class Board {
         for(var i = 0; i < 9; i++){
             var slot = document.createElement('board-slot');
             board.append(slot);
-
             slot.setAttribute('id', `slot-${i+1}`);
             slot.classList.add('slot');
+            
+            (slot as Slot).board = this;
+            this.boardSlots?.push(slot as Slot);
         }
+
+        console.log(this.boardSlots);
 
         var players = document.getElementsByClassName('player');
 
@@ -55,31 +62,18 @@ class Board {
         for(var i = 0; i < players.length; i++) {
             for(var j = 0; j < 5; j++) {
                 var slot = document.createElement('board-slot');
+                (slot as Slot).board = this;
                 slot.classList.add('slot');
                 slot.setAttribute('id', `player-${i}-slot-${j}`);
                 players[i].getElementsByClassName('pieces')[0].append(slot);
             }
         }
-
-        for(var i = 0; i < 2; i++)
-        {
-            var piece = document.createElement('doll-piece');
-            slots[i].append(piece);
-            
-            piece.setAttribute('id', `piece-${i + 1}`);
-            piece.setAttribute('piece-size', `${i + 1}`);
-            console.log(piece.id);
-        }
-
-        // for(var i = 0; i < 2; i++)
-        // {
-        //     var piece = document.createElement('doll-piece');
-        //     slots[i + 3].append(piece);
-            
-        //     piece.setAttribute('id', `piece-${i + 3}`);
-        //     piece.setAttribute('piece-size', `${i + 3}`);
-        //     console.log(piece.id);            
-        // }
     }
+    swapPlayer() {
+        var currentPlayer = document.querySelector('.pieces:not(.disabled)');
+        var swapTo = document.querySelector('.pieces.disabled');
 
+        currentPlayer?.classList.add('disabled');
+        swapTo?.classList.remove('disabled');
+    }
 }

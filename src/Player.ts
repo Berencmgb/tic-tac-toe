@@ -2,7 +2,12 @@ class Player{
     constructor(){
     }
     generatePieces(i: number){
+        var starts = i % 2 == 0;
+
         var board = document.getElementsByClassName('player')[i].getElementsByClassName('pieces')[0];
+
+        if(!starts)
+            board.classList.add('disabled');
 
         var slots = board.getElementsByClassName('slot');
 
@@ -15,8 +20,9 @@ class Player{
             var img = piece.getElementsByTagName('img')[0];
             // load images here by piece size
 
+            console.log((j + 1) / slots.length * 100);
 
-            //img.style.width = `${j + 1 / slots.length * 100}%`
+            img.style.width = `${(j + 1 )/ slots.length * 100}%`
         }        
     }
 }
