@@ -5,5 +5,35 @@ class Board {
         this.ySize = y;
     }
     generateBoard() {
+        document.body.innerHTML += `<div class="game-wrapper">
+        <div class="player-one-pieces player">
+            
+        </div>
+        <div class="game">
+            <div class="border">
+
+            </div>
+            <div class="board-wrapper">
+                <div class="board">
+                </div>
+            </div>
+            <div class="border">
+
+            </div>
+            </div>
+            <div class="player-two-pieces player">
+
+            </div>
+        </div>`;
+        var board = document.getElementsByClassName('board')[0];
+        if (board == null)
+            return;
+        // generate slots
+        for (var i = 0; i < 9; i++) {
+            if (i == 0 || i == 1)
+                board.innerHTML += `<board-slot id="slot-${i + 1}"><doll-piece></doll-piece></board-slot>`;
+            else
+                board.innerHTML += `<board-slot id="slot-${i + 1}"> </board-slot>`;
+        }
     }
 }
