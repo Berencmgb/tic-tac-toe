@@ -30,10 +30,27 @@ class Board {
             return;
         // generate slots
         for (var i = 0; i < 9; i++) {
-            if (i == 0 || i == 1)
-                board.innerHTML += `<board-slot id="slot-${i + 1}"><doll-piece></doll-piece></board-slot>`;
-            else
-                board.innerHTML += `<board-slot id="slot-${i + 1}"> </board-slot>`;
+            // if(i == 0 || i == 1)
+            //     board.innerHTML += `<board-slot id="slot-${i + 1}"><doll-piece></doll-piece></board-slot>`;
+            // else
+            board.innerHTML += `<board-slot class="slot" id="slot-${i + 1}"> </board-slot>`;
+        }
+        var slots = document.getElementsByClassName('slot');
+        for (var i = 0; i < 2; i++) {
+            var piece = document.createElement('doll-piece');
+            slots[i].append(piece);
+            piece.setAttribute('id', `piece-${i + 1}`);
+            piece.setAttribute('piece-size', `${i + 1}`);
+            console.log(piece.id);
+            //console.log(piece as Piece);
+        }
+        for (var i = 0; i < 2; i++) {
+            var piece = document.createElement('doll-piece');
+            slots[i + 3].append(piece);
+            piece.setAttribute('id', `piece-${i + 3}`);
+            piece.setAttribute('piece-size', `${i + 3}`);
+            console.log(piece.id);
+            //console.log(piece as Piece);
         }
     }
 }

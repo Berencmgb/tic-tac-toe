@@ -30,10 +30,27 @@ class Board {
             return;
         // generate slots
         for (var i = 0; i < 9; i++) {
-            if (i == 0 || i == 1)
-                board.innerHTML += `<board-slot id="slot-${i + 1}"><doll-piece></doll-piece></board-slot>`;
-            else
-                board.innerHTML += `<board-slot id="slot-${i + 1}"> </board-slot>`;
+            // if(i == 0 || i == 1)
+            //     board.innerHTML += `<board-slot id="slot-${i + 1}"><doll-piece></doll-piece></board-slot>`;
+            // else
+            board.innerHTML += `<board-slot class="slot" id="slot-${i + 1}"> </board-slot>`;
+        }
+        var slots = document.getElementsByClassName('slot');
+        for (var i = 0; i < 2; i++) {
+            var piece = document.createElement('doll-piece');
+            slots[i].append(piece);
+            piece.setAttribute('id', `piece-${i + 1}`);
+            piece.setAttribute('piece-size', `${i + 1}`);
+            console.log(piece.id);
+            //console.log(piece as Piece);
+        }
+        for (var i = 0; i < 2; i++) {
+            var piece = document.createElement('doll-piece');
+            slots[i + 3].append(piece);
+            piece.setAttribute('id', `piece-${i + 3}`);
+            piece.setAttribute('piece-size', `${i + 3}`);
+            console.log(piece.id);
+            //console.log(piece as Piece);
         }
     }
 }
@@ -47,21 +64,29 @@ function mainLoop() {
 
 "use strict";
 class Piece extends HTMLElement {
-    constructor(size) {
+    constructor() {
         super();
-        this.size = size;
         this.innerHTML += '<img class="icon" src="https://static.vecteezy.com/system/resources/previews/001/192/291/original/circle-png.png" />';
         this.classList.add('piece');
-        this.setAttribute('id', 'test-piece-one');
         this.ondragstart = function (e) {
-            var _a;
+            var _a, _b;
             var piece = this;
-            (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("id", piece.id);
+            (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("piece-id", piece.id);
+            (_b = e.dataTransfer) === null || _b === void 0 ? void 0 : _b.setData("piece-size", String(piece.getAttribute('piece-size')));
             console.log(e.dataTransfer);
         };
         this.ondrag = function (e) {
             e.preventDefault();
         };
+        this.setId = function (id) {
+            this.setId(id);
+        };
+    }
+    setId(id) {
+        this.id = `piece-${id}`;
+    }
+    setPieceSize(size) {
+        this.size = size;
     }
 }
 window.customElements.define('doll-piece', Piece);
@@ -83,10 +108,14 @@ class Slot extends HTMLElement {
         this.classList.add("slot");
         this.ondragover = e => { e.preventDefault(); };
         this.ondrop = function (e) {
-            var _a;
-            console.log(e.dataTransfer);
+            var _a, _b;
             e.preventDefault();
-            var pieceId = (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.getData("id");
+            var piece = this.getElementsByClassName('piece')[0];
+            if (piece != null) {
+                if (Number(piece.getAttribute('piece-size')) >= Number((_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.getData('piece-size')))
+                    return;
+            }
+            var pieceId = (_b = e.dataTransfer) === null || _b === void 0 ? void 0 : _b.getData("piece-id");
             var pieceElement = document.getElementById(pieceId);
             e.target.appendChild(pieceElement);
         };
