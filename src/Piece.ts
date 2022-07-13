@@ -10,7 +10,8 @@ class Piece extends HTMLElement {
             var piece = (this as HTMLElement);
 
             e.dataTransfer?.setData("piece-id", piece.id);
-            e.dataTransfer?.setData("piece-size", String(piece.getAttribute('piece-size')));
+            //.dataTransfer?.setData("piece-size", String(piece.getAttribute('piece-size')));
+            e.dataTransfer?.setData("piece-size", String((piece as Piece).size));
 
             console.log(e.dataTransfer)
         }

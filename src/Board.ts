@@ -64,7 +64,6 @@ class Board {
             piece.setAttribute('piece-size', `${i + 3}`);
             console.log(piece.id);
             
-            //console.log(piece as Piece);
         }
     }
 }
