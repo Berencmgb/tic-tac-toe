@@ -2,7 +2,6 @@
 class Slot extends HTMLElement {
     constructor(slotNumber) {
         super();
-        this.classList.add("slot");
         this.ondragover = e => { e.preventDefault(); };
         this.ondrop = function (e) {
             var _a, _b;
@@ -16,6 +15,9 @@ class Slot extends HTMLElement {
             var pieceElement = document.getElementById(pieceId);
             e.target.appendChild(pieceElement);
         };
+    }
+    connectedCallback() {
+        this.classList.add("slot");
     }
 }
 window.customElements.define('board-slot', Slot);

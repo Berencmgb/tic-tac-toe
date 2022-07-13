@@ -2,7 +2,6 @@ class Slot extends HTMLElement{
 
     constructor(slotNumber: number){
         super();
-        this.classList.add("slot");
         this.ondragover = e => { e.preventDefault(); };
         this.ondrop = function(e) {
             e.preventDefault();
@@ -14,11 +13,14 @@ class Slot extends HTMLElement{
                 if(Number(piece.getAttribute('piece-size')) >= Number(e.dataTransfer?.getData('piece-size')))
                     return;
             }
-            
+
             var pieceId = e.dataTransfer?.getData("piece-id");
             var pieceElement = document.getElementById(pieceId !) as HTMLElement;
             (e.target as HTMLElement).appendChild(pieceElement);
         }    
+    }
+    connectedCallback(){
+        this.classList.add("slot");
     }
 }
 
