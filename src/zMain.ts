@@ -3,10 +3,18 @@ mainLoop();
 function mainLoop() {
     var board = new Board(3, 3);
 
-    var player1 = new Player();
-    var player2 = new Player();
+    var player1 = new Player(board);
+    var player2 = new Player(board);
+
+    var players = [];
+
+    players.push(player1);
+    players.push(player2);
     
     board.generateBoard();
-    player1.generatePieces(0);
-    player2.generatePieces(1);
+
+    for(var i = 0; i < players.length; i++)
+    {
+        players[i].generatePieces(i);
+    }
 }

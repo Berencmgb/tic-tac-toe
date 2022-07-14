@@ -49,20 +49,5 @@ class Board {
                 players[i].getElementsByClassName('pieces')[0].append(slot);
             }
         }
-        for (var i = 0; i < 2; i++) {
-            var piece = document.createElement('doll-piece');
-            slots[i].append(piece);
-            piece.setAttribute('id', `piece-${i + 1}`);
-            piece.setAttribute('piece-size', `${i + 1}`);
-            console.log(piece.id);
-        }
-        // for(var i = 0; i < 2; i++)
-        // {
-        //     var piece = document.createElement('doll-piece');
-        //     slots[i + 3].append(piece);
-        //     piece.setAttribute('id', `piece-${i + 3}`);
-        //     piece.setAttribute('piece-size', `${i + 3}`);
-        //     console.log(piece.id);            
-        // }
     }
 }

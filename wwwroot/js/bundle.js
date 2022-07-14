@@ -49,21 +49,6 @@ class Board {
                 players[i].getElementsByClassName('pieces')[0].append(slot);
             }
         }
-        for (var i = 0; i < 2; i++) {
-            var piece = document.createElement('doll-piece');
-            slots[i].append(piece);
-            piece.setAttribute('id', `piece-${i + 1}`);
-            piece.setAttribute('piece-size', `${i + 1}`);
-            console.log(piece.id);
-        }
-        // for(var i = 0; i < 2; i++)
-        // {
-        //     var piece = document.createElement('doll-piece');
-        //     slots[i + 3].append(piece);
-        //     piece.setAttribute('id', `piece-${i + 3}`);
-        //     piece.setAttribute('piece-size', `${i + 3}`);
-        //     console.log(piece.id);            
-        // }
     }
 }
 
@@ -81,16 +66,10 @@ class Piece extends HTMLElement {
         this.ondrag = function (e) {
             e.preventDefault();
         };
-        this.setId = function (id) {
-            this.setId(id);
-        };
     }
     connectedCallback() {
-        this.innerHTML += '<img class="icon" src="https://static.vecteezy.com/system/resources/previews/001/192/291/original/circle-png.png" />';
+        this.innerHTML += '<div class="icon-wrapper"><img class="icon" src="https://static.vecteezy.com/system/resources/previews/001/192/291/original/circle-png.png" /><div>';
         this.classList.add('piece');
-    }
-    setId(id) {
-        this.id = `piece-${id}`;
     }
 }
 window.customElements.define('doll-piece', Piece);
@@ -107,19 +86,22 @@ var PieceSize;
 
 "use strict";
 class Player {
-    constructor() {
+    constructor(board) {
+        this.board = board;
     }
     generatePieces(i) {
         var board = document.getElementsByClassName('player')[i].getElementsByClassName('pieces')[0];
         var slots = board.getElementsByClassName('slot');
         for (var j = 0; j < slots.length; j++) {
-            var piece = document.createElement('doll-piece');
-            slots[j].append(piece);
-            piece.setAttribute('id', `p${i}-piece-${j + 1}`);
-            piece.setAttribute('piece-size', `${j + 1}`);
-            var img = piece.getElementsByTagName('img')[0];
+            var pieceElement = document.createElement('doll-piece');
+            slots[j].append(pieceElement);
+            var piece = pieceElement;
+            piece.board = this.board;
+            piece.size = j;
+            piece.id = `p${i + 1}-piece-${j + 1}`;
+            var img = pieceElement.getElementsByTagName('img')[0];
             // load images here by piece size
-            //img.style.width = `${j + 1 / slots.length * 100}%`
+            img.style.width = `${j + 1 / slots.length * 100}%`;
         }
     }
 }
@@ -162,9 +144,13 @@ class Printer {
 mainLoop();
 function mainLoop() {
     var board = new Board(3, 3);
-    var player1 = new Player();
-    var player2 = new Player();
+    var player1 = new Player(board);
+    var player2 = new Player(board);
+    var players = [];
+    players.push(player1);
+    players.push(player2);
     board.generateBoard();
-    player1.generatePieces(0);
-    player2.generatePieces(1);
+    for (var i = 0; i < players.length; i++) {
+        players[i].generatePieces(i);
+    }
 }

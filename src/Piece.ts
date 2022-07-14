@@ -1,4 +1,6 @@
 class Piece extends HTMLElement {
+    board: Board | undefined;
+    size: PieceSize | undefined;
     constructor(){
         super()
         this.ondragstart = function(e){
@@ -11,18 +13,12 @@ class Piece extends HTMLElement {
         }
         this.ondrag = function(e) {
             e.preventDefault();
-        };   
-        this.setId = function(id){
-            this.setId(id);
-        }
+        };
 
     }
     connectedCallback(){
-        this.innerHTML += '<img class="icon" src="https://static.vecteezy.com/system/resources/previews/001/192/291/original/circle-png.png" />';
+        this.innerHTML += '<div class="icon-wrapper"><img class="icon" src="https://static.vecteezy.com/system/resources/previews/001/192/291/original/circle-png.png" /><div>';
         this.classList.add('piece');
-    }
-    setId(id: number){
-        this.id = `piece-${id}`;
     }
 }
 
