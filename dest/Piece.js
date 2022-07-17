@@ -39,5 +39,8 @@ class Piece extends HTMLElement {
         var imageElement = htmlElement.getElementsByTagName('img')[0];
         imageElement.style.width = `${size / 5 * 100}%`;
     }
+    setSlot(pieceSlot) {
+        this.pieceSlot = pieceSlot;
+    }
 }
 window.customElements.define('doll-piece', Piece);

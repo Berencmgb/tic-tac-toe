@@ -1,5 +1,6 @@
 class Slot extends HTMLElement{    
     board: Board | undefined;
+    piece: Piece | undefined;
 
     constructor(slotNumber: number){
         super();
@@ -25,26 +26,31 @@ class Slot extends HTMLElement{
             var draggedPieceId = e.dataTransfer?.getData("piece-id");
             var draggedPieceElement = document.getElementById(draggedPieceId !) as HTMLElement;
 
-            ((draggedPieceElement as HTMLElement).closest('.slot') as Slot).board?.swapPlayer();
-
-            var dropTargetElement = e.target as HTMLElement;
-            
+            var dropTargetElement = e.target as HTMLElement;            
             if(!dropTargetElement.classList.contains('slot'))
                 dropTargetElement = dropTargetElement.closest('.slot')!;
-
+            
             dropTargetElement.innerHTML = "";
             dropTargetElement.appendChild(draggedPieceElement);
             draggedPieceElement.setAttribute('draggable', 'false');
-
+            
             var draggedPiece = draggedPieceElement as Piece;
             draggedPiece.setPieceSize(Number(e.dataTransfer?.getData('piece-size')));
+            draggedPiece.setSlot(this as Slot);
+            draggedPiece.player!.remainingPieces! -= 1;
+            (this as Slot).piece = draggedPiece;
 
-            console.log(`Item index: ${(e.target as Slot).board}`);
+            
+            ((draggedPieceElement as HTMLElement).closest('.slot') as Slot).board?.swapPlayer();
+            (this as Slot).board?.calculateWinner();
             e.dataTransfer?.items.clear();
         }    
     }
     connectedCallback(){
         this.classList.add("slot");
+    }
+    setPiece(piece: Piece){
+        this.piece = piece;
     }
 }
 

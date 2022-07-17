@@ -3,7 +3,9 @@ class Player {
     constructor() {
     }
     generatePieces(i) {
+        this.remainingPieces = 0;
         var starts = i % 2 == 0;
+        this.started = starts;
         var board = document.getElementsByClassName('player')[i].getElementsByClassName('pieces')[0];
         if (!starts)
             board.classList.add('disabled');
@@ -16,6 +18,7 @@ class Player {
             piece.setPieceSize(j + 1);
             piece.player = this;
             var img = pieceElement.getElementsByTagName('img')[0];
+            this.remainingPieces++;
         }
     }
 }

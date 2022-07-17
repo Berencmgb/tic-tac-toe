@@ -2,6 +2,7 @@ class Piece extends HTMLElement {
     hasImage: boolean;
     size: number | undefined;
     player: Player | undefined;
+    pieceSlot: Slot | undefined;
 
     constructor(){
         super()
@@ -48,6 +49,9 @@ class Piece extends HTMLElement {
         var htmlElement = this as HTMLElement;
         var imageElement = htmlElement.getElementsByTagName('img')[0];
         imageElement.style.width = `${size / 5 * 100}%`;
+    }
+    setSlot(pieceSlot: Slot){
+        this.pieceSlot = pieceSlot;
     }
 }
 

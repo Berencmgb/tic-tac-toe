@@ -9,4 +9,7 @@ function mainLoop() {
     board.generateBoard();
     player1.generatePieces(0);
     player2.generatePieces(1);
+
+    board.playerOne = player1;
+    board.playerTwo = player2;
 }
