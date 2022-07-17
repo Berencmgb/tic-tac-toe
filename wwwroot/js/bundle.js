@@ -99,13 +99,15 @@ class Board {
         winButton.setAttribute('onclick', 'window.location.reload()');
         winButton.innerHTML = 'Reset Game';
         this.winConditions.forEach(condition => {
-            if (compareArrays(playerOnePieces, condition)) {
-                playerWon = true;
-                topElement.append('Player 1 Wins!');
-            }
-            else if (compareArrays(playerTwoPieces, condition)) {
-                playerWon = true;
-                topElement.append('Player 2 wins!');
+            if (!playerWon) {
+                if (compareArrays(playerOnePieces, condition)) {
+                    playerWon = true;
+                    topElement.append('Player 1 Wins!');
+                }
+                else if (compareArrays(playerTwoPieces, condition)) {
+                    playerWon = true;
+                    topElement.append('Player 2 wins!');
+                }
             }
         });
         if (!playerWon) {

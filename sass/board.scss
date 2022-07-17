@@ -1,6 +1,7 @@
 *{
     margin: 0px;
     padding: 0px;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .game-wrapper{
@@ -22,6 +23,20 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+
+            button{
+                margin-top: 15px;
+                padding: 4px 8px;
+                color: white;
+                border-radius: 5px;
+                background-color: green;
+                transition: filter linear 0.08s;
+
+                &:hover{
+                    cursor: pointer;
+                    filter: brightness(105%);
+                }
+            }
         }
 
         .board-wrapper{
@@ -58,9 +73,8 @@
             grid-row: 100%;
             grid-template-rows: 20% 20% 20% 20% 20%;
             aspect-ratio: 1 / 5;
-            width: 30%;
+            width: 45%;
             border: 1px solid black;
-            margin-right: 25px;
 
             &.disabled{
                 opacity: 0.5;
