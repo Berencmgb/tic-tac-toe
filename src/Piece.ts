@@ -1,6 +1,7 @@
 class Piece extends HTMLElement {
     hasImage: boolean;
     size: number | undefined;
+    player: Player | undefined;
 
     constructor(){
         super()

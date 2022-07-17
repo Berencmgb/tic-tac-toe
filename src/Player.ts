@@ -13,16 +13,17 @@ class Player{
 
         for(var j = 0; j < slots.length; j++)
         {
-            var piece = document.createElement('doll-piece');
-            slots[j].append(piece);
-            piece.setAttribute('id', `p${i}-piece-${j + 1}`);
-            piece.setAttribute('piece-size', `${j + 1}`);
-            var img = piece.getElementsByTagName('img')[0];
-            // load images here by piece size
+            var pieceElement = document.createElement('doll-piece');
+            var piece = pieceElement as Piece;
 
-            console.log((j + 1) / slots.length * 100);
-
+            slots[j].append(pieceElement);
+            pieceElement.setAttribute('id', `p${i}-piece-${j + 1}`);
+            piece.size = j + 1;
+            piece.player = this;
+            var img = pieceElement.getElementsByTagName('img')[0];
             img.style.width = `${(j + 1 )/ slots.length * 100}%`
+
+            console.log((pieceElement as Piece).size);
         }        
     }
 }
