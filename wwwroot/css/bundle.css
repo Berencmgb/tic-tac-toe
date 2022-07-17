@@ -1,3 +1,8 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
 .game-wrapper {
   display: flex;
   flex-direction: row;
@@ -28,18 +33,18 @@
   display: grid;
   grid-template-rows: 33.3% 33.3% 33.4%;
   grid-template-columns: 33.3% 33.3% 33.4%;
-  border: 1px solid red;
+  border: 1px solid black;
   aspect-ratio: 1/1;
   width: 70%;
 }
 .game-wrapper .slot {
-  border: 1px solid red;
+  border: 1px solid black;
 }
 .game-wrapper .player {
   flex: 1;
   display: flex;
   background-color: lightgray;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
 }
 .game-wrapper .player .pieces {
@@ -48,7 +53,7 @@
   grid-template-rows: 20% 20% 20% 20% 20%;
   aspect-ratio: 1/5;
   width: 30%;
-  border: 1px solid red;
+  border: 1px solid black;
   margin-right: 25px;
 }
 .game-wrapper .player .pieces.disabled {
@@ -75,4 +80,7 @@
 }
 .game-wrapper [draggable=false]:hover {
   cursor: initial;
+}
+.game-wrapper .dragged-over {
+  background-color: rgba(255, 255, 0, 0.5);
 }

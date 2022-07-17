@@ -4,12 +4,45 @@ class Slot extends HTMLElement{
 
     constructor(slotNumber: number){
         super();
-        this.ondragover = e => { e.preventDefault(); };
+        this.ondragover = e => { 
+            e.preventDefault();
+
+            var targetElement = e.target as HTMLElement;
+
+            if(!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot') as HTMLElement;
+
+            targetElement.classList.add('dragged-over');
+
+         };
+        this.ondragenter = function(e){
+            var targetElement = e.target as HTMLElement;
+
+            if(!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot') as HTMLElement;
+
+            targetElement.classList.add('dragged-over');
+        }
+        this.ondragleave = function(e) {
+            var targetElement = e.target as HTMLElement;
+
+            if(!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot') as HTMLElement;
+
+            targetElement.classList.remove('dragged-over');
+        }
         this.ondrop = function(e) {
             e.preventDefault();
 
             var currentSlotPieceElement = (this as HTMLElement).getElementsByClassName('piece')[0];
             var currentSlotPiece = currentSlotPieceElement as Piece;
+
+            var targetElement = e.target as HTMLElement;
+
+            if(!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot') as HTMLElement;
+
+            targetElement.classList.remove('dragged-over');
 
             if(currentSlotPieceElement != null)
             {
@@ -25,7 +58,7 @@ class Slot extends HTMLElement{
 
             var draggedPieceId = e.dataTransfer?.getData("piece-id");
             var draggedPieceElement = document.getElementById(draggedPieceId !) as HTMLElement;
-
+            
             var dropTargetElement = e.target as HTMLElement;            
             if(!dropTargetElement.classList.contains('slot'))
                 dropTargetElement = dropTargetElement.closest('.slot')!;

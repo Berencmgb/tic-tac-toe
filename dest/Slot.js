@@ -2,12 +2,34 @@
 class Slot extends HTMLElement {
     constructor(slotNumber) {
         super();
-        this.ondragover = e => { e.preventDefault(); };
+        this.ondragover = e => {
+            e.preventDefault();
+            var targetElement = e.target;
+            if (!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot');
+            targetElement.classList.add('dragged-over');
+        };
+        this.ondragenter = function (e) {
+            var targetElement = e.target;
+            if (!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot');
+            targetElement.classList.add('dragged-over');
+        };
+        this.ondragleave = function (e) {
+            var targetElement = e.target;
+            if (!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot');
+            targetElement.classList.remove('dragged-over');
+        };
         this.ondrop = function (e) {
             var _a, _b, _c, _d, _e, _f;
             e.preventDefault();
             var currentSlotPieceElement = this.getElementsByClassName('piece')[0];
             var currentSlotPiece = currentSlotPieceElement;
+            var targetElement = e.target;
+            if (!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot');
+            targetElement.classList.remove('dragged-over');
             if (currentSlotPieceElement != null) {
                 if (currentSlotPiece.size >= Number((_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.getData('piece-size')))
                     return;

@@ -21,7 +21,7 @@ class Board {
         
         this.boardSlots = [];
         this.winConditions = [
-    //     // Left to rigt
+    //     // Left to right
             [0, 1, 2],
             [3, 4, 5],
             [6, 7, 8],

@@ -37,7 +37,8 @@ class Piece extends HTMLElement {
             return;
         
         this.hasImage = true;
-        this.innerHTML += '<img class="icon" src="https://static.vecteezy.com/system/resources/previews/001/192/291/original/circle-png.png" />';
+        var image = this.player!.started ? 'blue' : 'red'; 
+        this.innerHTML += `<img class="icon" src="/wwwroot/images/${image}.png" />`;
         this.classList.add('piece');
     }
     setId(id: number){

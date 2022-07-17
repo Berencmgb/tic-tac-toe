@@ -5,7 +5,7 @@ class Board {
         this.ySize = y;
         this.boardSlots = [];
         this.winConditions = [
-            //     // Left to rigt
+            //     // Left to right
             [0, 1, 2],
             [3, 4, 5],
             [6, 7, 8],
@@ -153,7 +153,8 @@ class Piece extends HTMLElement {
         if (this.hasImage)
             return;
         this.hasImage = true;
-        this.innerHTML += '<img class="icon" src="https://static.vecteezy.com/system/resources/previews/001/192/291/original/circle-png.png" />';
+        var image = this.player.started ? 'blue' : 'red';
+        this.innerHTML += `<img class="icon" src="/wwwroot/images/${image}.png" />`;
         this.classList.add('piece');
     }
     setId(id) {
@@ -196,10 +197,10 @@ class Player {
         for (var j = 0; j < slots.length; j++) {
             var pieceElement = document.createElement('doll-piece');
             var piece = pieceElement;
+            piece.player = this;
             slots[j].append(pieceElement);
             pieceElement.setAttribute('id', `p${i}-piece-${j + 1}`);
             piece.setPieceSize(j + 1);
-            piece.player = this;
             var img = pieceElement.getElementsByTagName('img')[0];
             this.remainingPieces++;
         }
@@ -210,12 +211,34 @@ class Player {
 class Slot extends HTMLElement {
     constructor(slotNumber) {
         super();
-        this.ondragover = e => { e.preventDefault(); };
+        this.ondragover = e => {
+            e.preventDefault();
+            var targetElement = e.target;
+            if (!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot');
+            targetElement.classList.add('dragged-over');
+        };
+        this.ondragenter = function (e) {
+            var targetElement = e.target;
+            if (!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot');
+            targetElement.classList.add('dragged-over');
+        };
+        this.ondragleave = function (e) {
+            var targetElement = e.target;
+            if (!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot');
+            targetElement.classList.remove('dragged-over');
+        };
         this.ondrop = function (e) {
             var _a, _b, _c, _d, _e, _f;
             e.preventDefault();
             var currentSlotPieceElement = this.getElementsByClassName('piece')[0];
             var currentSlotPiece = currentSlotPieceElement;
+            var targetElement = e.target;
+            if (!targetElement.classList.contains('slot'))
+                targetElement = targetElement.closest('.slot');
+            targetElement.classList.remove('dragged-over');
             if (currentSlotPieceElement != null) {
                 if (currentSlotPiece.size >= Number((_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.getData('piece-size')))
                     return;
@@ -268,8 +291,8 @@ function mainLoop() {
     var player1 = new Player();
     var player2 = new Player();
     board.generateBoard();
-    player1.generatePieces(0);
-    player2.generatePieces(1);
     board.playerOne = player1;
     board.playerTwo = player2;
+    player1.generatePieces(0);
+    player2.generatePieces(1);
 }

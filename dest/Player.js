@@ -13,10 +13,10 @@ class Player {
         for (var j = 0; j < slots.length; j++) {
             var pieceElement = document.createElement('doll-piece');
             var piece = pieceElement;
+            piece.player = this;
             slots[j].append(pieceElement);
             pieceElement.setAttribute('id', `p${i}-piece-${j + 1}`);
             piece.setPieceSize(j + 1);
-            piece.player = this;
             var img = pieceElement.getElementsByTagName('img')[0];
             this.remainingPieces++;
         }

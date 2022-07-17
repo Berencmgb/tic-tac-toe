@@ -20,11 +20,11 @@ class Player{
         {
             var pieceElement = document.createElement('doll-piece');
             var piece = pieceElement as Piece;
+            piece.player = this;
 
             slots[j].append(pieceElement);
             pieceElement.setAttribute('id', `p${i}-piece-${j + 1}`);
             piece.setPieceSize(j + 1);
-            piece.player = this;
             var img = pieceElement.getElementsByTagName('img')[0];
             this.remainingPieces++;
         }        
