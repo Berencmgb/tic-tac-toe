@@ -3,7 +3,7 @@ class Piece extends HTMLElement {
     constructor() {
         super();
         this.ondragstart = function (e) {
-            var _a, _b, _c;
+            var _a, _b;
             if (this.getAttribute('draggable') == 'false') {
                 e.preventDefault();
                 return;
@@ -12,10 +12,10 @@ class Piece extends HTMLElement {
                 e.preventDefault();
                 return;
             }
-            var piece = this;
-            (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("piece-id", piece.id);
-            (_b = e.dataTransfer) === null || _b === void 0 ? void 0 : _b.setData("piece-width", piece.style.width);
-            (_c = e.dataTransfer) === null || _c === void 0 ? void 0 : _c.setData("piece-size", String(piece.getAttribute('piece-size')));
+            var pieceElement = this;
+            var piece = pieceElement;
+            (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("piece-id", pieceElement.id);
+            (_b = e.dataTransfer) === null || _b === void 0 ? void 0 : _b.setData("piece-size", String(piece.size));
             console.log(e.dataTransfer);
         };
         this.hasImage = false;
@@ -32,6 +32,12 @@ class Piece extends HTMLElement {
     }
     setId(id) {
         this.id = `piece-${id}`;
+    }
+    setPieceSize(size) {
+        this.size = size;
+        var htmlElement = this;
+        var imageElement = htmlElement.getElementsByTagName('img')[0];
+        imageElement.style.width = `${size / 5 * 100}%`;
     }
 }
 window.customElements.define('doll-piece', Piece);

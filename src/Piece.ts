@@ -18,11 +18,11 @@ class Piece extends HTMLElement {
                 return;
             }
 
-            var piece = (this as HTMLElement);
+            var pieceElement = (this as HTMLElement);
+            var piece = pieceElement as Piece;
 
-            e.dataTransfer?.setData("piece-id", piece.id);
-            e.dataTransfer?.setData("piece-width", piece.style.width);
-            e.dataTransfer?.setData("piece-size", String(piece.getAttribute('piece-size')));
+            e.dataTransfer?.setData("piece-id", pieceElement.id);
+            e.dataTransfer?.setData("piece-size", String(piece.size));
 
             console.log(e.dataTransfer)
         }
@@ -41,6 +41,13 @@ class Piece extends HTMLElement {
     }
     setId(id: number){
         this.id = `piece-${id}`;
+    }
+    setPieceSize(size: number) {
+        this.size = size;
+        
+        var htmlElement = this as HTMLElement;
+        var imageElement = htmlElement.getElementsByTagName('img')[0];
+        imageElement.style.width = `${size / 5 * 100}%`;
     }
 }
 

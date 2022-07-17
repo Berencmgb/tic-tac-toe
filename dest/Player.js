@@ -13,11 +13,9 @@ class Player {
             var piece = pieceElement;
             slots[j].append(pieceElement);
             pieceElement.setAttribute('id', `p${i}-piece-${j + 1}`);
-            piece.size = j + 1;
+            piece.setPieceSize(j + 1);
             piece.player = this;
             var img = pieceElement.getElementsByTagName('img')[0];
-            img.style.width = `${(j + 1) / slots.length * 100}%`;
-            console.log(pieceElement.size);
         }
     }
 }

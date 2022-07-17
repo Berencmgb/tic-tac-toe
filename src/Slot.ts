@@ -7,37 +7,44 @@ class Slot extends HTMLElement{
         this.ondrop = function(e) {
             e.preventDefault();
 
-            var piece = (this as HTMLElement).getElementsByClassName('piece')[0];
+            var currentSlotPieceElement = (this as HTMLElement).getElementsByClassName('piece')[0];
+            var currentSlotPiece = currentSlotPieceElement as Piece;
 
-            if(piece != null)
+            if(currentSlotPieceElement != null)
             {
-                if(Number(piece.getAttribute('piece-size')) >= Number(e.dataTransfer?.getData('piece-size')))
+                if(currentSlotPiece.size! >= Number(e.dataTransfer?.getData('piece-size')))
                     return;
 
-                if(piece.closest('.pieces') != undefined)
+                if(currentSlotPieceElement.closest('.pieces') != undefined)
                     return;
             }
 
             if((e.target as HTMLElement).closest('.pieces') != undefined)
                 return;           
 
-            //(e.target as Slot).board?.swapPlayer();
-            var pieceId = e.dataTransfer?.getData("piece-id");
-            var pieceElement = document.getElementById(pieceId !) as HTMLElement;
-            pieceElement.setAttribute('draggable', 'false');
-            pieceElement.setAttribute('piece-size', String(e.dataTransfer?.getData('piece-size')));
-            pieceElement.style.width = String(e.dataTransfer?.getData("piece-width"));
-            ((pieceElement as HTMLElement).closest('.slot') as Slot).board?.swapPlayer();
-            (e.target as HTMLElement).innerHTML = "";
-            (e.target as HTMLElement).appendChild(pieceElement);
+            var draggedPieceId = e.dataTransfer?.getData("piece-id");
+            var draggedPieceElement = document.getElementById(draggedPieceId !) as HTMLElement;
 
-            console.log(`Item index: ${(e.target as Slot).board?.boardSlots.indexOf(e.target as Slot)}`);
+            ((draggedPieceElement as HTMLElement).closest('.slot') as Slot).board?.swapPlayer();
+
+            var dropTargetElement = e.target as HTMLElement;
+            
+            if(!dropTargetElement.classList.contains('slot'))
+                dropTargetElement = dropTargetElement.closest('.slot')!;
+
+            dropTargetElement.innerHTML = "";
+            dropTargetElement.appendChild(draggedPieceElement);
+            draggedPieceElement.setAttribute('draggable', 'false');
+
+            var draggedPiece = draggedPieceElement as Piece;
+            draggedPiece.setPieceSize(Number(e.dataTransfer?.getData('piece-size')));
+
+            console.log(`Item index: ${(e.target as Slot).board}`);
             e.dataTransfer?.items.clear();
         }    
     }
     connectedCallback(){
         this.classList.add("slot");
-        console.log(this.board);
     }
 }
 

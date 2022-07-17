@@ -69,7 +69,7 @@ class Piece extends HTMLElement {
     constructor() {
         super();
         this.ondragstart = function (e) {
-            var _a, _b, _c;
+            var _a, _b;
             if (this.getAttribute('draggable') == 'false') {
                 e.preventDefault();
                 return;
@@ -78,10 +78,10 @@ class Piece extends HTMLElement {
                 e.preventDefault();
                 return;
             }
-            var piece = this;
-            (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("piece-id", piece.id);
-            (_b = e.dataTransfer) === null || _b === void 0 ? void 0 : _b.setData("piece-width", piece.style.width);
-            (_c = e.dataTransfer) === null || _c === void 0 ? void 0 : _c.setData("piece-size", String(piece.getAttribute('piece-size')));
+            var pieceElement = this;
+            var piece = pieceElement;
+            (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("piece-id", pieceElement.id);
+            (_b = e.dataTransfer) === null || _b === void 0 ? void 0 : _b.setData("piece-size", String(piece.size));
             console.log(e.dataTransfer);
         };
         this.hasImage = false;
@@ -98,6 +98,12 @@ class Piece extends HTMLElement {
     }
     setId(id) {
         this.id = `piece-${id}`;
+    }
+    setPieceSize(size) {
+        this.size = size;
+        var htmlElement = this;
+        var imageElement = htmlElement.getElementsByTagName('img')[0];
+        imageElement.style.width = `${size / 5 * 100}%`;
     }
 }
 window.customElements.define('doll-piece', Piece);
@@ -127,11 +133,9 @@ class Player {
             var piece = pieceElement;
             slots[j].append(pieceElement);
             pieceElement.setAttribute('id', `p${i}-piece-${j + 1}`);
-            piece.size = j + 1;
+            piece.setPieceSize(j + 1);
             piece.player = this;
             var img = pieceElement.getElementsByTagName('img')[0];
-            img.style.width = `${(j + 1) / slots.length * 100}%`;
-            console.log(pieceElement.size);
         }
     }
 }
@@ -142,33 +146,35 @@ class Slot extends HTMLElement {
         super();
         this.ondragover = e => { e.preventDefault(); };
         this.ondrop = function (e) {
-            var _a, _b, _c, _d, _e, _f, _g;
+            var _a, _b, _c, _d, _e;
             e.preventDefault();
-            var piece = this.getElementsByClassName('piece')[0];
-            if (piece != null) {
-                if (Number(piece.getAttribute('piece-size')) >= Number((_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.getData('piece-size')))
+            var currentSlotPieceElement = this.getElementsByClassName('piece')[0];
+            var currentSlotPiece = currentSlotPieceElement;
+            if (currentSlotPieceElement != null) {
+                if (currentSlotPiece.size >= Number((_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.getData('piece-size')))
                     return;
-                if (piece.closest('.pieces') != undefined)
+                if (currentSlotPieceElement.closest('.pieces') != undefined)
                     return;
             }
             if (e.target.closest('.pieces') != undefined)
                 return;
-            //(e.target as Slot).board?.swapPlayer();
-            var pieceId = (_b = e.dataTransfer) === null || _b === void 0 ? void 0 : _b.getData("piece-id");
-            var pieceElement = document.getElementById(pieceId);
-            pieceElement.setAttribute('draggable', 'false');
-            pieceElement.setAttribute('piece-size', String((_c = e.dataTransfer) === null || _c === void 0 ? void 0 : _c.getData('piece-size')));
-            pieceElement.style.width = String((_d = e.dataTransfer) === null || _d === void 0 ? void 0 : _d.getData("piece-width"));
-            (_e = pieceElement.closest('.slot').board) === null || _e === void 0 ? void 0 : _e.swapPlayer();
-            e.target.innerHTML = "";
-            e.target.appendChild(pieceElement);
-            console.log(`Item index: ${(_f = e.target.board) === null || _f === void 0 ? void 0 : _f.boardSlots.indexOf(e.target)}`);
-            (_g = e.dataTransfer) === null || _g === void 0 ? void 0 : _g.items.clear();
+            var draggedPieceId = (_b = e.dataTransfer) === null || _b === void 0 ? void 0 : _b.getData("piece-id");
+            var draggedPieceElement = document.getElementById(draggedPieceId);
+            (_c = draggedPieceElement.closest('.slot').board) === null || _c === void 0 ? void 0 : _c.swapPlayer();
+            var dropTargetElement = e.target;
+            if (!dropTargetElement.classList.contains('slot'))
+                dropTargetElement = dropTargetElement.closest('.slot');
+            dropTargetElement.innerHTML = "";
+            dropTargetElement.appendChild(draggedPieceElement);
+            draggedPieceElement.setAttribute('draggable', 'false');
+            var draggedPiece = draggedPieceElement;
+            draggedPiece.setPieceSize(Number((_d = e.dataTransfer) === null || _d === void 0 ? void 0 : _d.getData('piece-size')));
+            console.log(`Item index: ${e.target.board}`);
+            (_e = e.dataTransfer) === null || _e === void 0 ? void 0 : _e.items.clear();
         };
     }
     connectedCallback() {
         this.classList.add("slot");
-        console.log(this.board);
     }
 }
 window.customElements.define('board-slot', Slot);
